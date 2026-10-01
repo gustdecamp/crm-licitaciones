@@ -15,13 +15,15 @@ import {
 interface Props {
   item: Item;
   column: ColumnId;
+  note?: string;
   onMove: (id: string, column: ColumnId) => void;
   onDelete: (id: string) => void;
+  onNote: (id: string, note: string) => void;
 }
 
 const SWIPE_THRESHOLD = 55;
 
-export default function ItemCard({ item, column, onMove, onDelete }: Props) {
+export default function ItemCard({ item, column, note, onMove, onDelete, onNote }: Props) {
   const expired = isExpired(item);
   const expiring = isExpiring(item);
   const isNewItem = isNew(item);
@@ -34,16 +36,18 @@ export default function ItemCard({ item, column, onMove, onDelete }: Props) {
   const touchStartX = useRef<number | null>(null);
   const [swipeDelta, setSwipeDelta] = useState(0);
   const [swiping, setSwiping] = useState(false);
+  const [showNote, setShowNote] = useState(false);
+  const [noteText, setNoteText] = useState(note ?? "");
 
   const handleTouchStart = (e: React.TouchEvent) => {
+    if (showNote) return; // don't swipe while editing note
     touchStartX.current = e.touches[0].clientX;
     setSwiping(true);
   };
 
   const handleTouchMove = (e: React.TouchEvent) => {
-    if (touchStartX.current === null) return;
+    if (touchStartX.current === null || showNote) return;
     const delta = e.touches[0].clientX - touchStartX.current;
-    // Clamp to avoid too much travel
     setSwipeDelta(Math.max(-100, Math.min(100, delta)));
   };
 
@@ -59,13 +63,17 @@ export default function ItemCard({ item, column, onMove, onDelete }: Props) {
     setSwiping(false);
   };
 
+  const saveNote = () => {
+    onNote(item.id, noteText);
+    setShowNote(false);
+  };
+
   const typeStyle =
     item.type === "licitacion"
       ? "bg-blue-100 text-blue-800"
       : "bg-forest-100 text-forest-800";
   const typeLabel = item.type === "licitacion" ? "Licitación" : "Subvención";
 
-  // Swipe hint color
   const swipeRight = swipeDelta > 20 && next;
   const swipeLeft = swipeDelta < -20 && prev;
 
@@ -88,12 +96,12 @@ export default function ItemCard({ item, column, onMove, onDelete }: Props) {
     >
       {/* Swipe direction indicator */}
       {swipeRight && (
-        <div className="pointer-events-none absolute inset-0 flex items-center justify-end rounded-xl bg-green-50/70 pr-4 text-lg font-bold text-green-600">
+        <div className="pointer-events-none absolute inset-0 flex items-center justify-end rounded-xl bg-green-50/80 pr-4 text-base font-bold text-green-600">
           → {next?.label}
         </div>
       )}
       {swipeLeft && (
-        <div className="pointer-events-none absolute inset-0 flex items-center justify-start rounded-xl bg-amber-50/70 pl-4 text-lg font-bold text-amber-600">
+        <div className="pointer-events-none absolute inset-0 flex items-center justify-start rounded-xl bg-amber-50/80 pl-4 text-base font-bold text-amber-600">
           {prev?.label} ←
         </div>
       )}
@@ -105,50 +113,30 @@ export default function ItemCard({ item, column, onMove, onDelete }: Props) {
               🆕 NEW
             </span>
           )}
-          <span
-            className={`rounded-md px-1.5 py-0.5 text-[10px] font-semibold ${typeStyle}`}
-          >
+          <span className={`rounded-md px-1.5 py-0.5 text-[10px] font-semibold ${typeStyle}`}>
             {typeLabel}
           </span>
         </div>
 
-        <h3
-          className={`text-sm font-bold leading-snug text-forest-900 ${
-            expired ? "line-through" : ""
-          }`}
-        >
+        <h3 className={`text-sm font-bold leading-snug text-forest-900 ${expired ? "line-through" : ""}`}>
           {item.title}
         </h3>
 
-        <p className="mt-1 text-xs font-medium text-forest-600">
-          {item.organismo}
-        </p>
+        <p className="mt-1 text-xs font-medium text-forest-600">{item.organismo}</p>
 
         {item.presupuesto && (
           <p className="mt-1 text-xs text-gray-600">💶 {item.presupuesto}</p>
         )}
 
-        <p
-          className={`mt-1 text-xs font-semibold ${
-            expired
-              ? "text-gray-400"
-              : expiring
-                ? "text-red-600"
-                : "text-gray-600"
-          }`}
-        >
+        <p className={`mt-1 text-xs font-semibold ${expired ? "text-gray-400" : expiring ? "text-red-600" : "text-gray-600"}`}>
           ⏳ {formatPlazo(item.plazo)}
           {days !== null && !expired && days >= 0 && (
-            <span className="ml-1 font-normal">
-              ({days === 0 ? "hoy" : `${days} d`})
-            </span>
+            <span className="ml-1 font-normal">({days === 0 ? "hoy" : `${days} d`})</span>
           )}
           {expired && <span className="ml-1 font-normal">(vencido)</span>}
         </p>
 
-        <p className="mt-2 text-xs leading-relaxed text-gray-700">
-          {item.descripcion}
-        </p>
+        <p className="mt-2 text-xs leading-relaxed text-gray-700">{item.descripcion}</p>
 
         <a
           href={item.enlace}
@@ -158,6 +146,41 @@ export default function ItemCard({ item, column, onMove, onDelete }: Props) {
         >
           Ver fuente ↗
         </a>
+
+        {/* Note section */}
+        {showNote ? (
+          <div className="mt-2">
+            <textarea
+              className="w-full rounded-lg border border-sand-300 p-2 text-xs text-gray-800 focus:outline-none focus:ring-1 focus:ring-forest-400"
+              rows={2}
+              placeholder="Añade una nota..."
+              value={noteText}
+              onChange={(e) => setNoteText(e.target.value)}
+              autoFocus
+            />
+            <div className="mt-1 flex gap-2">
+              <button
+                onClick={saveNote}
+                className="rounded-md bg-forest-600 px-3 py-1 text-xs font-bold text-white"
+              >
+                Guardar
+              </button>
+              <button
+                onClick={() => { setNoteText(note ?? ""); setShowNote(false); }}
+                className="rounded-md bg-sand-100 px-3 py-1 text-xs font-bold text-forest-700"
+              >
+                Cancelar
+              </button>
+            </div>
+          </div>
+        ) : note ? (
+          <div
+            className="mt-2 cursor-pointer rounded-lg bg-yellow-50 p-2 text-xs text-gray-700"
+            onClick={() => setShowNote(true)}
+          >
+            📝 {note}
+          </div>
+        ) : null}
 
         {/* Action bar */}
         <div className="mt-3 flex items-center justify-between border-t border-sand-100 pt-2">
@@ -185,15 +208,22 @@ export default function ItemCard({ item, column, onMove, onDelete }: Props) {
               </button>
             )}
           </div>
-          <button
-            onClick={() => {
-              if (confirm("¿Eliminar?")) onDelete(item.id);
-            }}
-            title="Eliminar"
-            className="rounded-lg px-2 py-2 text-sm text-gray-400 active:bg-red-50 active:text-red-600"
-          >
-            🗑️
-          </button>
+          <div className="flex gap-1">
+            <button
+              onClick={() => setShowNote(!showNote)}
+              title="Nota"
+              className={`rounded-lg px-2 py-2 text-sm active:bg-yellow-100 ${note ? "text-yellow-600" : "text-gray-400"}`}
+            >
+              📝
+            </button>
+            <button
+              onClick={() => { if (confirm("¿Eliminar?")) onDelete(item.id); }}
+              title="Eliminar"
+              className="rounded-lg px-2 py-2 text-sm text-gray-400 active:bg-red-50 active:text-red-600"
+            >
+              🗑️
+            </button>
+          </div>
         </div>
       </div>
     </div>

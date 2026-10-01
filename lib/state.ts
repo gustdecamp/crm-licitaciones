@@ -5,6 +5,7 @@ const KEY = "panel-pau-state";
 export interface ItemOverride {
   column?: ColumnId;
   deleted?: boolean;
+  note?: string;
 }
 
 export type StateMap = Record<string, ItemOverride>;

@@ -10,6 +10,7 @@ import {
   COMPANIES,
   daysUntilPlazo,
   isNew,
+  isExpiring,
 } from "@/lib/items";
 import { loadState, setOverride, StateMap } from "@/lib/state";
 import Header from "./Header";
@@ -21,11 +22,9 @@ interface Props {
 
 function sortByUrgency(items: Item[]): Item[] {
   return [...items].sort((a, b) => {
-    // NEW items first
     const aNew = isNew(a) ? 0 : 1;
     const bNew = isNew(b) ? 0 : 1;
     if (aNew !== bNew) return aNew - bNew;
-    // Then by deadline ascending (most urgent first)
     const aD = daysUntilPlazo(a) ?? 9999;
     const bD = daysUntilPlazo(b) ?? 9999;
     return aD - bD;
@@ -51,6 +50,18 @@ export default function KanbanBoard({ data }: Props) {
     setState((s) => setOverride(s, id, { deleted: true }));
   };
 
+  const handleNote = (id: string, note: string) => {
+    setState((s) => setOverride(s, id, { note }));
+  };
+
+  const notes = useMemo(() => {
+    const n: Record<string, string> = {};
+    for (const [id, ov] of Object.entries(state)) {
+      if (ov.note) n[id] = ov.note;
+    }
+    return n;
+  }, [state]);
+
   const columnOf = (item: Item): ColumnId =>
     state[item.id]?.column ?? "nuevas";
 
@@ -70,7 +81,12 @@ export default function KanbanBoard({ data }: Props) {
   const byColumn = (col: ColumnId) =>
     sortByUrgency(companyItems.filter((i) => columnOf(i) === col));
 
-  const newCount = byColumn("nuevas").filter(isNew).length;
+  // Summary stats
+  const newToday = companyItems.filter((i) => isNew(i) && columnOf(i) === "nuevas").length;
+  const urgent = companyItems.filter(
+    (i) => isExpiring(i) && columnOf(i) !== "cerradas" && !state[i.id]?.deleted
+  ).length;
+  const pendingReview = byColumn("nuevas").length;
 
   if (!mounted) {
     return (
@@ -84,12 +100,38 @@ export default function KanbanBoard({ data }: Props) {
     <div className="min-h-screen pb-10">
       <Header active={company} onChange={setCompany} counts={counts} />
 
-      <main className="mx-auto max-w-6xl px-3 pt-4">
+      {/* Summary banner */}
+      {(newToday > 0 || urgent > 0 || pendingReview > 0) && (
+        <div className="mx-auto max-w-6xl px-3 pt-3">
+          <div className="flex flex-wrap gap-2 rounded-xl bg-forest-900 px-4 py-3 text-sm">
+            {newToday > 0 && (
+              <span className="font-bold text-amber-400">
+                🆕 {newToday} nueva{newToday > 1 ? "s" : ""} hoy
+              </span>
+            )}
+            {urgent > 0 && (
+              <span className="font-bold text-red-400">
+                ⚠️ {urgent} urgente{urgent > 1 ? "s" : ""} (&lt;3 días)
+              </span>
+            )}
+            {pendingReview > 0 && newToday === 0 && (
+              <span className="font-bold text-white">
+                📥 {pendingReview} pendiente{pendingReview > 1 ? "s" : ""} de revisar
+              </span>
+            )}
+            {newToday === 0 && urgent === 0 && pendingReview === 0 && (
+              <span className="text-forest-300">✅ Todo al día</span>
+            )}
+          </div>
+        </div>
+      )}
+
+      <main className="mx-auto max-w-6xl px-3 pt-3">
         {/* Mobile column selector */}
         <div className="mb-3 flex gap-1.5 overflow-x-auto md:hidden">
           {COLUMNS.map((col) => {
             const count = byColumn(col.id).length;
-            const hasNew = col.id === "nuevas" && newCount > 0;
+            const hasNew = col.id === "nuevas" && newToday > 0;
             return (
               <button
                 key={col.id}
@@ -113,7 +155,7 @@ export default function KanbanBoard({ data }: Props) {
 
         {/* Mobile swipe hint */}
         <p className="mb-3 text-center text-[11px] text-gray-400 md:hidden">
-          Desliza las tarjetas ← → para moverlas de columna
+          Desliza ← → para mover · 📝 para notas
         </p>
 
         {/* Mobile: single column */}
@@ -125,8 +167,10 @@ export default function KanbanBoard({ data }: Props) {
               emoji={col.emoji}
               columnId={col.id}
               items={byColumn(col.id)}
+              notes={notes}
               onMove={handleMove}
               onDelete={handleDelete}
+              onNote={handleNote}
             />
           ))}
         </div>
@@ -140,8 +184,10 @@ export default function KanbanBoard({ data }: Props) {
               emoji={col.emoji}
               columnId={col.id}
               items={byColumn(col.id)}
+              notes={notes}
               onMove={handleMove}
               onDelete={handleDelete}
+              onNote={handleNote}
             />
           ))}
         </div>

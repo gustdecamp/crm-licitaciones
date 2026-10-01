@@ -5,6 +5,12 @@ export const metadata: Metadata = {
   title: "Panel Pau — Gust de Camp & Ulivarda",
   description:
     "Panel de licitaciones y subvenciones para Gust de Camp y Ulivarda",
+  manifest: "/manifest.json",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "black-translucent",
+    title: "Licitaciones",
+  },
 };
 
 export const viewport: Viewport = {
