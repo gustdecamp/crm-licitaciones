@@ -1,0 +1,77 @@
+{
+  "generatedAt": "2026-10-01T09:00:00Z",
+  "items": [
+    {
+      "id": "boib-desbroce-camins-calvia-2026",
+      "company": "ulivarda",
+      "type": "licitacion",
+      "title": "Desbroce y mantenimiento de caminos rurales de Calvià",
+      "organismo": "Ajuntament de Calvià",
+      "presupuesto": "48.000 €",
+      "plazo": "2026-10-03",
+      "descripcion": "Trabajos de desbroce, limpieza de cunetas y mantenimiento de caminos rurales. Encaja muy bien con tractor y trituradora forestal de Ulivarda.",
+      "enlace": "https://contrataciondelestado.es/",
+      "addedAt": "2026-10-01T09:00:00Z"
+    },
+    {
+      "id": "galatzo-manteniment-forestal-2026",
+      "company": "ulivarda",
+      "type": "licitacion",
+      "title": "Mantenimiento forestal finca pública de Galatzó",
+      "organismo": "Consell de Mallorca",
+      "presupuesto": "120.000 €",
+      "plazo": "2026-10-20",
+      "descripcion": "Actuaciones de gestión forestal y prevención de incendios en la finca pública de Galatzó. Posible división por lotes.",
+      "enlace": "https://www.conselldemallorca.cat/",
+      "addedAt": "2026-10-01T09:00:00Z"
+    },
+    {
+      "id": "fogaiba-modernitzacio-explotacions-2026",
+      "company": "gustdecamp",
+      "type": "subvencion",
+      "title": "Ayudas a la modernización de explotaciones agrarias",
+      "organismo": "FOGAIBA — Govern de les Illes Balears",
+      "presupuesto": "Hasta 40% de la inversión",
+      "plazo": "2026-11-15",
+      "descripcion": "Subvención para modernización de invernaderos, riego y maquinaria agrícola. Muy relevante para las mejoras del huerto de Gust de Camp.",
+      "enlace": "https://www.caib.es/",
+      "addedAt": "2026-10-01T09:00:00Z"
+    },
+    {
+      "id": "caib-agricultura-ecologica-2026",
+      "company": "gustdecamp",
+      "type": "subvencion",
+      "title": "Ayudas a la agricultura ecológica y km 0",
+      "organismo": "Conselleria d'Agricultura",
+      "presupuesto": "Variable según superficie",
+      "plazo": "2026-10-30",
+      "descripcion": "Apoyo a productores de proximidad y agricultura ecológica. Encaja con el modelo de verdura de calidad para restaurantes.",
+      "enlace": "https://www.caib.es/",
+      "addedAt": "2026-09-29T09:00:00Z"
+    },
+    {
+      "id": "paret-seca-serra-tramuntana-2026",
+      "company": "ulivarda",
+      "type": "licitacion",
+      "title": "Restauración de paredes de piedra en seco - Serra de Tramuntana",
+      "organismo": "Consell de Mallorca",
+      "presupuesto": "65.000 €",
+      "plazo": "2026-11-05",
+      "descripcion": "Reconstrucción de muros tradicionales de piedra en seco. Trabajo especializado que domina Ulivarda.",
+      "enlace": "https://www.conselldemallorca.cat/",
+      "addedAt": "2026-09-28T09:00:00Z"
+    },
+    {
+      "id": "boe-ayudas-sequia-pac-2026",
+      "company": "gustdecamp",
+      "type": "subvencion",
+      "title": "Ayudas excepcionales por sequía (PAC)",
+      "organismo": "FEGA — Ministerio de Agricultura",
+      "presupuesto": "Pago único por hectárea",
+      "plazo": "2026-09-30",
+      "descripcion": "Compensación por pérdidas derivadas de la sequía. Plazo ya vencido — revisar si hay prórroga.",
+      "enlace": "https://www.fega.gob.es/",
+      "addedAt": "2026-09-20T09:00:00Z"
+    }
+  ]
+}
