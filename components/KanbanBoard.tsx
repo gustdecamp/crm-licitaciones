@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import {
   Item,
+  ItemType,
   ItemsFile,
   Company,
   ColumnId,
@@ -36,6 +37,8 @@ export default function KanbanBoard({ data }: Props) {
   const [company, setCompany] = useState<Company>("gustdecamp");
   const [mobileCol, setMobileCol] = useState<ColumnId>("nuevas");
   const [mounted, setMounted] = useState(false);
+  const [typeFilter, setTypeFilter] = useState<ItemType | "all">("all");
+  const [search, setSearch] = useState("");
 
   useEffect(() => {
     setState(loadState());
@@ -52,6 +55,16 @@ export default function KanbanBoard({ data }: Props) {
 
   const handleNote = (id: string, note: string) => {
     setState((s) => setOverride(s, id, { note }));
+  };
+
+  const handleReviewAll = () => {
+    setState((s) => {
+      let next = { ...s };
+      for (const item of byColumn("nuevas")) {
+        next = setOverride(next, item.id, { column: "para_revisar" });
+      }
+      return next;
+    });
   };
 
   const notes = useMemo(() => {
@@ -76,15 +89,27 @@ export default function KanbanBoard({ data }: Props) {
     return c;
   }, [visibleItems]);
 
-  const companyItems = visibleItems.filter((i) => i.company === company);
+  const companyItems = useMemo(() => {
+    let items = visibleItems.filter((i) => i.company === company);
+    if (typeFilter !== "all") items = items.filter((i) => i.type === typeFilter);
+    if (search.trim()) {
+      const q = search.toLowerCase();
+      items = items.filter(
+        (i) =>
+          i.title.toLowerCase().includes(q) ||
+          i.organismo.toLowerCase().includes(q) ||
+          i.descripcion.toLowerCase().includes(q)
+      );
+    }
+    return items;
+  }, [visibleItems, company, typeFilter, search]);
 
   const byColumn = (col: ColumnId) =>
     sortByUrgency(companyItems.filter((i) => columnOf(i) === col));
 
-  // Summary stats
   const newToday = companyItems.filter((i) => isNew(i) && columnOf(i) === "nuevas").length;
   const urgent = companyItems.filter(
-    (i) => isExpiring(i) && columnOf(i) !== "cerradas" && !state[i.id]?.deleted
+    (i) => isExpiring(i) && columnOf(i) !== "cerradas"
   ).length;
   const pendingReview = byColumn("nuevas").length;
 
@@ -101,32 +126,66 @@ export default function KanbanBoard({ data }: Props) {
       <Header active={company} onChange={setCompany} counts={counts} />
 
       {/* Summary banner */}
-      {(newToday > 0 || urgent > 0 || pendingReview > 0) && (
-        <div className="mx-auto max-w-6xl px-3 pt-3">
-          <div className="flex flex-wrap gap-2 rounded-xl bg-forest-900 px-4 py-3 text-sm">
-            {newToday > 0 && (
-              <span className="font-bold text-amber-400">
-                🆕 {newToday} nueva{newToday > 1 ? "s" : ""} hoy
-              </span>
-            )}
-            {urgent > 0 && (
-              <span className="font-bold text-red-400">
-                ⚠️ {urgent} urgente{urgent > 1 ? "s" : ""} (&lt;3 días)
-              </span>
-            )}
-            {pendingReview > 0 && newToday === 0 && (
-              <span className="font-bold text-white">
-                📥 {pendingReview} pendiente{pendingReview > 1 ? "s" : ""} de revisar
-              </span>
-            )}
-            {newToday === 0 && urgent === 0 && pendingReview === 0 && (
-              <span className="text-forest-300">✅ Todo al día</span>
-            )}
-          </div>
+      <div className="mx-auto max-w-6xl px-3 pt-3">
+        <div className="flex flex-wrap items-center gap-x-3 gap-y-1 rounded-xl bg-forest-900 px-4 py-3 text-sm">
+          {newToday > 0 && (
+            <span className="font-bold text-amber-400">
+              🆕 {newToday} nueva{newToday > 1 ? "s" : ""} hoy
+            </span>
+          )}
+          {urgent > 0 && (
+            <span className="font-bold text-red-400">
+              ⚠️ {urgent} urgente{urgent > 1 ? "s" : ""} (&lt;3 d)
+            </span>
+          )}
+          {pendingReview > 0 && (
+            <span className="text-forest-300">
+              📥 {pendingReview} en Nuevas
+            </span>
+          )}
+          {newToday === 0 && urgent === 0 && pendingReview === 0 && (
+            <span className="text-forest-300">✅ Todo al día</span>
+          )}
+          {pendingReview > 0 && (
+            <button
+              onClick={handleReviewAll}
+              className="ml-auto rounded-lg bg-forest-600 px-3 py-1 text-xs font-bold text-white active:bg-forest-500"
+            >
+              ✓ Revisar todas
+            </button>
+          )}
         </div>
-      )}
+      </div>
 
       <main className="mx-auto max-w-6xl px-3 pt-3">
+        {/* Filters */}
+        <div className="mb-3 flex flex-wrap items-center gap-2">
+          {/* Search */}
+          <input
+            type="search"
+            placeholder="🔍 Buscar..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            className="flex-1 min-w-0 rounded-xl border border-sand-300 bg-white px-3 py-2 text-xs text-gray-800 focus:outline-none focus:ring-1 focus:ring-forest-400"
+          />
+          {/* Type filter */}
+          <div className="flex gap-1.5">
+            {(["all", "licitacion", "subvencion"] as const).map((t) => (
+              <button
+                key={t}
+                onClick={() => setTypeFilter(t)}
+                className={`rounded-full px-3 py-1.5 text-xs font-bold transition ${
+                  typeFilter === t
+                    ? "bg-forest-600 text-white"
+                    : "bg-sand-200 text-forest-700"
+                }`}
+              >
+                {t === "all" ? "Todos" : t === "licitacion" ? "Licitaciones" : "Subvenciones"}
+              </button>
+            ))}
+          </div>
+        </div>
+
         {/* Mobile column selector */}
         <div className="mb-3 flex gap-1.5 overflow-x-auto md:hidden">
           {COLUMNS.map((col) => {
