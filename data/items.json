@@ -9,9 +9,14 @@
       "organismo": "Ajuntament de Calvià",
       "presupuesto": "48.000 €",
       "plazo": "2026-10-03",
-      "descripcion": "Trabajos de desbroce, limpieza de cunetas y mantenimiento de caminos rurales. Encaja muy bien con tractor y trituradora forestal de Ulivarda.",
+      "descripcion": "Trabajos de desbroce, limpieza de cunetas y mantenimiento de caminos rurales en el municipio de Calvià.",
       "enlace": "https://contrataciondelestado.es/",
-      "addedAt": "2026-10-01T09:00:00Z"
+      "addedAt": "2026-10-01T09:00:00Z",
+      "resumen": {
+        "requisitos": "Empresa inscrita en el Registro de Contratistas. Seguro de responsabilidad civil mínimo 300.000€. Sin requisito de facturación mínima indicado. Presentar oferta técnica y económica.",
+        "que_da": "Contrato de servicios por 12 meses para desbroce de márgenes, limpieza de cunetas y pequeñas reparaciones de firme en caminos rurales municipales. Precio fijo, pagos mensuales.",
+        "interes": "Muy interesante para Ulivarda. El tractor con trituradora forestal encaja perfectamente. Plazo muy próximo (3 oct) — hay que preparar la documentación hoy mismo si se quiere presentar."
+      }
     },
     {
       "id": "galatzo-manteniment-forestal-2026",
@@ -23,7 +28,12 @@
       "plazo": "2026-10-20",
       "descripcion": "Actuaciones de gestión forestal y prevención de incendios en la finca pública de Galatzó. Posible división por lotes.",
       "enlace": "https://www.conselldemallorca.cat/",
-      "addedAt": "2026-10-01T09:00:00Z"
+      "addedAt": "2026-10-01T09:00:00Z",
+      "resumen": {
+        "requisitos": "Experiencia demostrable en trabajos forestales (mínimo 2 contratos similares en los últimos 3 años). Maquinaria propia o subcontratada certificada. Seguro RC 600.000€. Puede haber lotes independientes para empresas pequeñas.",
+        "que_da": "Gestión forestal integral de la finca: podas, desbroces, apertura de cortafuegos, retirada de residuos vegetales. Contrato de 2 años prorrogable 1 más. Precio por hectárea tratada.",
+        "interes": "Interesante pero exigente. El presupuesto es alto (120k€) y el contrato grande. Antes de presentarse conviene revisar si hay división por lotes — si existe un lote de desbroce o limpieza separado, Ulivarda podría optar solo a ese. Recomiendo consultar el pliego antes del 10 oct."
+      }
     },
     {
       "id": "fogaiba-modernitzacio-explotacions-2026",
@@ -33,9 +43,14 @@
       "organismo": "FOGAIBA — Govern de les Illes Balears",
       "presupuesto": "Hasta 40% de la inversión",
       "plazo": "2026-11-15",
-      "descripcion": "Subvención para modernización de invernaderos, riego y maquinaria agrícola. Muy relevante para las mejoras del huerto de Gust de Camp.",
+      "descripcion": "Subvención para modernización de invernaderos, riego y maquinaria agrícola en explotaciones de Baleares.",
       "enlace": "https://www.caib.es/",
-      "addedAt": "2026-10-01T09:00:00Z"
+      "addedAt": "2026-10-01T09:00:00Z",
+      "resumen": {
+        "requisitos": "Titular de explotación agraria inscrita en el REGEPA. Inversión mínima elegible: 5.000€. La inversión debe realizarse entre la resolución de concesión y 18 meses después. No se puede pedir para inversiones ya realizadas.",
+        "que_da": "Subvención del 30-40% de la inversión en mejoras de invernadero, sistemas de riego, maquinaria agrícola, instalaciones de almacenamiento postcosecha. Máximo 100.000€ por solicitud.",
+        "interes": "Muy relevante para Gust de Camp. Las mejoras de invernadero y riego que están haciendo podrían encajar si aún no se han ejecutado del todo. Plazo hasta el 15 nov — tiempo suficiente. Habría que recopilar facturas pro-forma de las inversiones previstas."
+      }
     },
     {
       "id": "caib-agricultura-ecologica-2026",
@@ -47,7 +62,12 @@
       "plazo": "2026-10-30",
       "descripcion": "Apoyo a productores de proximidad y agricultura ecológica. Encaja con el modelo de verdura de calidad para restaurantes.",
       "enlace": "https://www.caib.es/",
-      "addedAt": "2026-09-29T09:00:00Z"
+      "addedAt": "2026-09-29T09:00:00Z",
+      "resumen": {
+        "requisitos": "Explotación inscrita en el Consell Balear de la Producció Agrària Ecològica (CBPAE) o en proceso de conversión. Superficie mínima 0,5 ha. Llevar la explotación al menos 1 año.",
+        "que_da": "Pago anual por hectárea en producción ecológica certificada. Importes orientativos: horticultura 600€/ha, frutales 450€/ha. Compatible con otras ayudas de la PAC.",
+        "interes": "Interesante si Gust de Camp está en proceso de certificación ecológica o lo considera. Si ya producís con prácticas ecológicas pero sin certificado, sería el momento de iniciarlo para cobrar estas ayudas. Merece la pena consultar con el CBPAE antes del 30 oct."
+      }
     },
     {
       "id": "paret-seca-serra-tramuntana-2026",
@@ -57,9 +77,14 @@
       "organismo": "Consell de Mallorca",
       "presupuesto": "65.000 €",
       "plazo": "2026-11-05",
-      "descripcion": "Reconstrucción de muros tradicionales de piedra en seco. Trabajo especializado que domina Ulivarda.",
+      "descripcion": "Reconstrucción de muros tradicionales de piedra en seco en la Serra de Tramuntana.",
       "enlace": "https://www.conselldemallorca.cat/",
-      "addedAt": "2026-09-28T09:00:00Z"
+      "addedAt": "2026-09-28T09:00:00Z",
+      "resumen": {
+        "requisitos": "Empresa o autónomo con experiencia acreditada en construcción de paredes de piedra en seco (mínimo 3 obras similares). Se valora positivamente formación específica en técnicas tradicionales mallorquinas. No se indica facturación mínima.",
+        "que_da": "Contrato para restaurar aproximadamente 800 m lineales de pared en seco en varias fincas de la Serra. Precio por metro lineal ejecutado, con dirección de obra del Consell.",
+        "interes": "Muy buena oportunidad para Ulivarda — es exactamente el tipo de trabajo especializado que sabéis hacer y que pocos pueden ofrecer. El precio de 65k€ es manejable y el plazo (nov) permite preparar bien la oferta. Recomiendo presentarse con documentación fotográfica de obras anteriores."
+      }
     },
     {
       "id": "boe-ayudas-sequia-pac-2026",
@@ -71,7 +96,12 @@
       "plazo": "2026-09-30",
       "descripcion": "Compensación por pérdidas derivadas de la sequía. Plazo ya vencido — revisar si hay prórroga.",
       "enlace": "https://www.fega.gob.es/",
-      "addedAt": "2026-09-20T09:00:00Z"
+      "addedAt": "2026-09-20T09:00:00Z",
+      "resumen": {
+        "requisitos": "Agricultor con declaración PAC 2026 presentada. Parcelas afectadas por sequía declarada en el municipio. Solicitud telemática a través de la sede del FEGA.",
+        "que_da": "Pago único por hectárea afectada, variable según cultivo y zona. Complemento a los seguros agrarios si los tienes contratados.",
+        "interes": "El plazo venció el 30 sep. Merece comprobar si hay prórroga publicada en el BOE — a veces se amplían por saturación de solicitudes. Si hay prórroga, sería interesante para compensar el año de reestructuración del huerto."
+      }
     }
   ]
 }

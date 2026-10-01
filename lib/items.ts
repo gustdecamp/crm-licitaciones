@@ -2,6 +2,12 @@ export type Company = "gustdecamp" | "ulivarda";
 export type ItemType = "licitacion" | "subvencion";
 export type ColumnId = "nuevas" | "para_revisar" | "solicitadas" | "cerradas";
 
+export interface ItemResumen {
+  requisitos: string;      // Quién puede pedir / condiciones mínimas
+  que_da: string;          // Qué se financia / qué trabajo se pide
+  interes: string;         // Valoración Sol: por qué interesa o no
+}
+
 export interface Item {
   id: string;
   company: Company;
@@ -13,6 +19,7 @@ export interface Item {
   descripcion: string;
   enlace: string;
   addedAt: string; // ISO datetime
+  resumen?: ItemResumen;
 }
 
 export interface ItemsFile {

@@ -12,6 +12,7 @@ import {
   formatPlazo,
 } from "@/lib/items";
 
+
 interface Props {
   item: Item;
   column: ColumnId;
@@ -38,6 +39,7 @@ export default function ItemCard({ item, column, note, onMove, onDelete, onNote 
   const [swiping, setSwiping] = useState(false);
   const [showNote, setShowNote] = useState(false);
   const [noteText, setNoteText] = useState(note ?? "");
+  const [showResumen, setShowResumen] = useState(false);
 
   const handleTouchStart = (e: React.TouchEvent) => {
     if (showNote) return; // don't swipe while editing note
@@ -138,14 +140,50 @@ export default function ItemCard({ item, column, note, onMove, onDelete, onNote 
 
         <p className="mt-2 text-xs leading-relaxed text-gray-700">{item.descripcion}</p>
 
-        <a
-          href={item.enlace}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="mt-2 inline-block text-xs font-semibold text-forest-500 underline"
-        >
-          Ver fuente ↗
-        </a>
+        {/* Expandable detail panel */}
+        {item.resumen ? (
+          <>
+            <button
+              onClick={() => setShowResumen((v) => !v)}
+              className="mt-2 flex items-center gap-1 text-xs font-semibold text-forest-500"
+            >
+              {showResumen ? "▲ Ocultar detalle" : "▼ Ver detalle y requisitos"}
+            </button>
+            {showResumen && (
+              <div className="mt-2 space-y-2 rounded-xl bg-sand-50 p-3 text-xs">
+                <div>
+                  <p className="font-bold text-forest-800">📋 Qué piden / requisitos</p>
+                  <p className="mt-0.5 leading-relaxed text-gray-700">{item.resumen.requisitos}</p>
+                </div>
+                <div>
+                  <p className="font-bold text-forest-800">💰 Qué dan / qué se contrata</p>
+                  <p className="mt-0.5 leading-relaxed text-gray-700">{item.resumen.que_da}</p>
+                </div>
+                <div className="rounded-lg bg-forest-100 p-2">
+                  <p className="font-bold text-forest-800">⭐ Valoración Sol</p>
+                  <p className="mt-0.5 leading-relaxed text-forest-900">{item.resumen.interes}</p>
+                </div>
+                <a
+                  href={item.enlace}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-block font-semibold text-forest-500 underline"
+                >
+                  Ver fuente oficial ↗
+                </a>
+              </div>
+            )}
+          </>
+        ) : (
+          <a
+            href={item.enlace}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mt-2 inline-block text-xs font-semibold text-forest-500 underline"
+          >
+            Ver fuente ↗
+          </a>
+        )}
 
         {/* Note section */}
         {showNote ? (
